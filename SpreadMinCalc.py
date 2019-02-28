@@ -1,18 +1,18 @@
 import csv
 
 
-def minimum_spread(filename, min_col, max_col, res_col, data_start_line = 0):
+# Returns the value of a given result column (res_col)
+# corresponding to the lowest spread between 2 other columns (col1 and col2)
+def minimum_spread(filename, col1, col2, res_col):
     min_spread = 9223372036854775807
     min_result = ""
     with open(filename) as file:
         data = csv.reader(file, delimiter="\n")
-        for i in range(1, data_start_line):
-            next(data)
         for line in data:
             try:
                 line[0] = line[0].split()
-                spread = int(''.join(char for char in line[0][max_col] if char.isdigit())) - int(''.join(char for char in line[0][min_col] if char.isdigit()))
-                print(line[0][0] + " " + line[0][1] + " " + line[0][2] + " " + str(spread))
+                spread = abs(int(''.join(char for char in line[0][col1] if char.isdigit())) - int(''.join(char for char in line[0][col2] if char.isdigit())))
+                # print(line[0][res_col] + " " + line[0][col1] + " " + line[0][col2] + " " + str(spread))
                 if spread < min_spread:
                     min_spread = spread
                     min_result = line[0][res_col]
@@ -21,4 +21,5 @@ def minimum_spread(filename, min_col, max_col, res_col, data_start_line = 0):
         return min_result
 
 
-print(minimum_spread('w_data (5).dat', 2, 1, 0, 5))
+print(minimum_spread('w_data (5).dat', 2, 1, 0))
+print(minimum_spread('soccer.dat', 6, 8, 1))
